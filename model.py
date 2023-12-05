@@ -3,12 +3,6 @@
 
 # In[1]:
 
-
-要将您提供的代码修改为满足 `OptiGuide` 的格式要求，我们需要确保代码包含特定的标记，以帮助 `OptiGuide` 系统正确识别和处理数据和约束。通常，这涉及到在数据定义部分和约束定义部分添加特定的注释或字符串。
-
-以下是您的代码的修改版，我加入了 `OptiGuide` 所需的标记：
-
-```python
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
