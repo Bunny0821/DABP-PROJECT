@@ -46,8 +46,7 @@ cost_factors = {
     'Second_Class': 0.1,  # cost per km
     'Standard_Class': 0.05,  # cost per km
 }
-
-orders = [i for i in range(total_orders)]
+total_orders = 40000
 
 #benefit_factors = {
 #    'First_Class': 0.05,  
@@ -58,8 +57,6 @@ orders = [i for i in range(total_orders)]
 
 penalty_per_day_late = 0.02
 
-# Total number of orders
-total_orders = 40000
 
 m = Model("ShippingMode")
 
@@ -97,12 +94,6 @@ late_delivery_cost = [
 
 late_cost = pd.DataFrame(late_delivery_cost, columns=shipping_mode)
 
-benefit_per_order = [
-    [df_selected.loc[i, 'Order Item Product Price'] * benefit_factors[shipping_mode[j]] for j in range(len(shipping_mode))]
-    for i in range(len(orders))
-]
-
-benefit = pd.DataFrame(benefit_per_order, columns=shipping_mode)
 
 m.setObjective(
     quicksum(immediate_cost.loc[i, shipping_mode[j]]*x[i,shipping_mode[j]] + late_cost.loc[i, shipping_mode[j]]*x[i,shipping_mode[j]] for j in range(len(shipping_mode)) for i in orders),
@@ -113,7 +104,7 @@ m.setObjective(
 # OPTIGUIDE CONSTRAINT CODE GOES HERE
 m.addConstrs(quicksum(x[i, shipping_mode[j]] for j in range(len(shipping_mode))) == 1 for i in orders)
 m.addConstrs(quicksum(x[i, shipping_mode[j]] for i in orders) <= total_orders/4 for j in range(len(shipping_mode)))
-m.addConstrs(late_day.loc[i,shipping_mode[j]]*x[i,shipping_mode[j]] <= 5 for i in orders for j in range(len(shipping_mode)))
+m.addConstrs(late_day.loc[i,shipping_mode[j]]*x[i,shipping_mode[j]] <= 13 for i in orders for j in range(len(shipping_mode)))
 
 m.update()
 m.optimize()
@@ -126,5 +117,3 @@ optimal_choice = pd.DataFrame(selected_modes, columns=['Order','Selected_Shippin
 optimal_choice.set_index('Order', inplace=True)
 optimal_choice = pd.merge(df_selected["Order Item Id"], optimal_choice, left_index=True, right_index=True)
 optimal_choice
-
-
