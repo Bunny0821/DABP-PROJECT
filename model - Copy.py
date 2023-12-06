@@ -34,18 +34,19 @@ df_selected = df[['Type', 'Days for shipping (real)', 'Days for shipment (schedu
 df_selected = df_selected.sample(n=40000, random_state=42).reset_index(drop=True)
 
 shipping_speed = {
-    'First_Class': 7000, # distance travel per day 
-    'Same_Day': 5000,
-    'Second_Class': 3000,
-    'Standard_Class': 1000,
+    'First_Class': 1500, # distance travel per day in km
+    'Same_Day': 1000, # distance travel per day in km
+    'Second_Class': 800, # distance travel per day in km
+    'Standard_Class': 500, # distance travel per day in km
 }
 
 cost_factors = {
-    'First_Class': 0.045,  
-    'Same_Day': 0.025,
-    'Second_Class': 0.015,
-    'Standard_Class': 0.009,
+    'First_Class': 0.2,  # cost per km
+    'Same_Day': 0.15,  # cost per km
+    'Second_Class': 0.1,  # cost per km
+    'Standard_Class': 0.05,  # cost per km
 }
+
 orders = [i for i in range(total_orders)]
 
 #benefit_factors = {
@@ -104,7 +105,7 @@ benefit_per_order = [
 benefit = pd.DataFrame(benefit_per_order, columns=shipping_mode)
 
 m.setObjective(
-    quicksum(immediate_cost.loc[i, shipping_mode[j]]*x[i,shipping_mode[j]] + late_cost.loc[i, shipping_mode[j]]*x[i,shipping_mode[j]] - benefit.loc[i, shipping_mode[j]]*x[i,shipping_mode[j]] for j in range(len(shipping_mode)) for i in orders),
+    quicksum(immediate_cost.loc[i, shipping_mode[j]]*x[i,shipping_mode[j]] + late_cost.loc[i, shipping_mode[j]]*x[i,shipping_mode[j]] for j in range(len(shipping_mode)) for i in orders),
     GRB.MINIMIZE
 )
 
