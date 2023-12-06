@@ -30,17 +30,17 @@ cost_factors = {
 }
 orders = [i for i in range(total_orders)]
 
-benefit_factors = {
-    'First_Class': 0.05,  
-    'Same_Day': 0.03,
-    'Second_Class': 0.02,
-    'Standard_Class': 0.01,
-}
+#benefit_factors = {
+#    'First_Class': 0.05,  
+#    'Same_Day': 0.03,
+#    'Second_Class': 0.02,
+#    'Standard_Class': 0.01,
+#}
 
 penalty_per_day_late = 0.02
 
 # Total number of orders
-total_orders = len(df_selected)
+total_orders = 40000
 
 m = Model("ShippingMode")
 
