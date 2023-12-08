@@ -104,7 +104,7 @@ m.setObjective(
 # OPTIGUIDE CONSTRAINT CODE GOES HERE
 m.addConstrs(quicksum(x[i, shipping_mode[j]] for j in range(len(shipping_mode))) == 1 for i in orders)
 m.addConstrs(quicksum(x[i, shipping_mode[j]] for i in orders) <= total_orders/4 for j in range(len(shipping_mode)))
-m.addConstrs(late_day.loc[i,shipping_mode[j]]*x[i,shipping_mode[j]] <= 5 for i in orders for j in range(len(shipping_mode)))
+m.addConstrs(late_day.loc[i,shipping_mode[j]]*x[i,shipping_mode[j]] <= 23 for i in orders for j in range(len(shipping_mode)))
 
 m.update()
 m.optimize()
